@@ -76,4 +76,5 @@ if st.button("Send"):
 
         st.session_state.messages.append({"role": "bot", "text": response})
 
-        st.experimental_rerun()
+        st.rerun()
+
