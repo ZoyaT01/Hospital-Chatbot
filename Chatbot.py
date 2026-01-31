@@ -1,6 +1,7 @@
 import streamlit as st
 import difflib
 import random
+import string
 
 st.set_page_config(page_title="Hospital Chatbot", page_icon="🤖")
 
@@ -58,7 +59,7 @@ user_input = st.chat_input("Type your question...")
 if user_input:
     st.session_state.messages.append({"role": "user", "text": user_input})
 
-    user_text = user_input.lower()
+    user_text = user_input.lower().translate(str.maketrans("", "", string.punctuation))
     greetings = ["hi", "hello", "hey", "hii", "hy"]
 
     if user_text in greetings:
@@ -74,4 +75,5 @@ if user_input:
 
     st.session_state.messages.append({"role": "bot", "text": response})
     st.rerun()
+
 
