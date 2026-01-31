@@ -53,28 +53,25 @@ for msg in st.session_state.messages:
     else:
         st.markdown(f"**Bot:** {msg['text']}")
 
-user_input = st.text_input("Type your question:")
+user_input = st.chat_input("Type your question...")
 
-if st.button("Send"):
-    if user_input.strip() != "":
-        st.session_state.messages.append({"role": "user", "text": user_input})
+if user_input:
+    st.session_state.messages.append({"role": "user", "text": user_input})
 
-        user_text = user_input.lower()
+    user_text = user_input.lower()
+    greetings = ["hi", "hello", "hey", "hii", "hy"]
 
-        greetings = ["hi", "hello", "hey", "hii", "hy"]
-
-        if user_text in greetings:
-            response = random.choice(greeting_responses)
-        elif user_text in ["thanks", "thank you", "ok thanks", "okay thanks", "thx", "ok"]:
-            response = random.choice(thanks_responses)
+    if user_text in greetings:
+        response = random.choice(greeting_responses)
+    elif user_text in ["thanks", "thank you", "ok thanks", "okay thanks", "thx", "ok"]:
+        response = random.choice(thanks_responses)
+    else:
+        match = get_best_match(user_text)
+        if match:
+            response = faqs[match]
         else:
-            match = get_best_match(user_text)
-            if match:
-                response = faqs[match]
-            else:
-                response = "Sorry, I couldn't understand that. Please ask something else."
+            response = "Sorry, I couldn't understand that."
 
-        st.session_state.messages.append({"role": "bot", "text": response})
-
-        st.rerun()
+    st.session_state.messages.append({"role": "bot", "text": response})
+    st.rerun()
 
